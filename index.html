@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryan Importados | Grifes & Moda Exclusiva</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            gold: { 400: '#F59E0B', 500: '#D97706', 600: '#B45309' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-[#090a0f] text-neutral-100 min-h-screen flex flex-col font-sans selection:bg-gold-500 selection:text-black">
+
+  <div id="toast" class="fixed top-5 right-5 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-neutral-900 border border-neutral-700 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs md:text-sm">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+    <span id="toast-msg" class="font-medium">Mensagem</span>
+  </div>
+
+  <div class="bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 border-b border-neutral-800 py-2 text-center text-xs tracking-wider text-neutral-300 font-medium px-4">
+    <span class="inline-flex items-center gap-2">
+      <i class="fa-solid fa-plane-departure text-gold-400"></i> ENVIAMOS PARA TODO O BRASIL • ROUPAS IMPORTADAS COM PADRÃO EXCLUSIVO
+    </span>
+  </div>
+
+  <header class="sticky top-0 z-40 bg-[#090a0f]/90 backdrop-blur-md border-b border-neutral-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-gold-500/10">
+          <i class="fa-solid fa-crown text-base"></i>
+        </div>
+        <div>
+          <span class="text-lg md:text-xl font-extrabold tracking-tight text-white block leading-none">RYAN</span>
+          <span class="text-[10px] tracking-[0.25em] text-gold-400 font-bold uppercase">Importados</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2.5">
+        <a id="btn-header-wpp" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-xl flex items-center gap-2 transition shadow-lg shadow-emerald-950">
+          <i class="fa-brands fa-whatsapp text-base"></i>
+          <span class="hidden sm:inline">WhatsApp</span>
+        </a>
+        <button onclick="abrirAdmin()" class="bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-400 hover:text-white w-9 h-9 rounded-xl flex items-center justify-center text-xs transition" title="Acesso Restrito">
+          <i class="fa-solid fa-user-shield"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative w-full h-64 sm:h-80 md:h-[400px] overflow-hidden bg-neutral-950 flex items-center justify-center border-b border-neutral-800">
+    <img id="banner-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="Banner Ryan Importados" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="absolute inset-0 bg-gradient-to-t from-[#090a0f] via-[#090a0f]/40 to-transparent"></div>
+    
+    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 bg-neutral-900/90 border border-neutral-700/80 px-3 py-1 rounded-full text-xs text-gold-400 font-semibold mb-3">
+        <i class="fa-solid fa-sparkles"></i> Grifes Selecionadas Pronta Entrega
+      </div>
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase drop-shadow-md">
+        Vista o Melhor das <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-amber-200">Grifes</span>
+      </h1>
+      <p class="text-neutral-300 mt-2 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-normal">
+        Tommy Hilfiger, Adidas, Armani, Lacoste, Brooksfield. Escolha sua peça e compre direto pelo WhatsApp.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-neutral-800/80 bg-neutral-900/40">
+    <div class="max-w-7xl mx-auto px-4 py-5 grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+      <div class="flex flex-col items-center p-2">
+        <i class="fa-solid fa-gem text-gold-400 text-lg mb-1"></i>
+        <h4 class="text-xs font-bold text-white">Importados Originais</h4>
+        <p class="text-[10px] text-neutral-400">Tecido e acabamento padrão luxo</p>
+      </div>
+      <div class="flex flex-col items-center p-2">
+        <i class="fa-solid fa-truck-fast text-emerald-400 text-lg mb-1"></i>
+        <h4 class="text-xs font-bold text-white">Envio Imediato</h4>
+        <p class="text-[10px] text-neutral-400">Rastreio detalhado no WhatsApp</p>
+      </div>
+      <div class="flex flex-col items-center p-2">
+        <i class="fa-solid fa-shield-check text-blue-400 text-lg mb-1"></i>
+        <h4 class="text-xs font-bold text-white">Compra Segura</h4>
+        <p class="text-[10px] text-neutral-400">Garantia total de entrega</p>
+      </div>
+      <div class="flex flex-col items-center p-2">
+        <i class="fa-brands fa-whatsapp text-emerald-400 text-lg mb-1"></i>
+        <h4 class="text-xs font-bold text-white">Atendimento Ryan</h4>
+        <p class="text-[10px] text-neutral-400">Auxílio no tamanho ideal</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">Catálogo Ryan Importados</h2>
+        <p class="text-xs text-neutral-400 mt-0.5">Encontre sua peça pelo filtro ou pela barra de busca</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="relative w-full sm:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 text-xs"></i>
+          <input type="text" id="input-busca" oninput="renderizarCatalogo()" placeholder="Buscar por modelo ou cor..." class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-gold-400 transition">
+        </div>
+        <div class="text-xs text-neutral-400 font-semibold bg-neutral-900 border border-neutral-800 px-3 py-2 rounded-xl whitespace-nowrap">
+          <span id="produtos-count" class="text-gold-400 font-bold">0</span> itens
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar">
+      <button onclick="filtrarMarca('todas')" class="filtro-btn active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-gold-500 text-black shadow-md transition" data-marca="todas">Todas as Peças</button>
+      <button onclick="filtrarMarca('Tommy Hilfiger')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Tommy Hilfiger">Tommy Hilfiger</button>
+      <button onclick="filtrarMarca('Adidas')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Adidas">Adidas</button>
+      <button onclick="filtrarMarca('Armani')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Armani">Armani</button>
+      <button onclick="filtrarMarca('Lacoste')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Lacoste">Lacoste</button>
+      <button onclick="filtrarMarca('Brooksfield')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Brooksfield">Brooksfield</button>
+      <button onclick="filtrarMarca('Outras')" class="filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition" data-marca="Outras">Outras Grifes</button>
+    </div>
+
+    <div id="grid-produtos" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+
+    <div id="vazio-msg" class="hidden text-center py-16 bg-neutral-900/30 rounded-2xl border border-neutral-800">
+      <i class="fa-solid fa-box-open text-4xl text-neutral-600 mb-3"></i>
+      <p class="text-neutral-300 font-medium text-sm">Nenhuma peça encontrada.</p>
+    </div>
+  </section>
+
+  <section class="bg-neutral-950 py-10 border-t border-b border-neutral-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-xl mx-auto mb-8">
+        <div class="inline-flex items-center gap-1.5 text-gold-400 mb-1">
+          <i class="fa-solid fa-star text-sm"></i><i class="fa-solid fa-star text-sm"></i><i class="fa-solid fa-star text-sm"></i><i class="fa-solid fa-star text-sm"></i><i class="fa-solid fa-star text-sm"></i>
+          <span class="text-white text-xs font-bold ml-1.5">4.9 / 5.0</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-white">Avaliações de Clientes Verificados</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-neutral-900/70 p-5 rounded-2xl border border-neutral-800">
+          <div class="flex text-gold-400 text-xs gap-1 mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-neutral-300 text-xs sm:text-sm italic">
+            "A polo da Lacoste e a bermuda da Tommy que peguei com o Ryan são impecáveis. Pano original, caimento top! Chegou certinho aqui em SP."
+          </p>
+          <div class="mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-white">Matheus L.</span>
+            <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Comprador Verificado</span>
+          </div>
+        </div>
+
+        <div class="bg-neutral-900/70 p-5 rounded-2xl border border-neutral-800">
+          <div class="flex text-gold-400 text-xs gap-1 mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-neutral-300 text-xs sm:text-sm italic">
+            "Peguei duas camisas da Brooksfield pro trabalho. O Ryan tirou todas as dúvidas de tamanho no WhatsApp antes de postar. Recomendo demais!"
+          </p>
+          <div class="mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-white">Rodrigo A.</span>
+            <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Comprador Verificado</span>
+          </div>
+        </div>
+
+        <div class="bg-neutral-900/70 p-5 rounded-2xl border border-neutral-800">
+          <div class="flex text-gold-400 text-xs gap-1 mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-neutral-300 text-xs sm:text-sm italic">
+            "Peça da Armani top de verdade. Chegou rápido e muito bem embalado. Melhor preço de importados que já comprei."
+          </p>
+          <div class="mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-white">Gabriel S.</span>
+            <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Comprador Verificado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-[#08090b] border-t border-neutral-900 py-6 text-neutral-500 text-xs text-center">
+    <p>© 2026 Ryan Importados. Todos os direitos reservados.</p>
+  </footer>
+
+  <a id="btn-flutuante-wpp" href="#" target="_blank" class="fixed bottom-5 right-5 z-40 bg-emerald-500 hover:bg-emerald-400 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-xl shadow-emerald-950 transition hover:scale-110">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <div id="modal-admin" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-neutral-900 border border-neutral-800 rounded-3xl w-full max-w-lg p-6 relative max-h-[92vh] overflow-y-auto shadow-2xl">
+      <button onclick="fecharAdmin()" class="absolute top-5 right-5 text-neutral-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div id="admin-login" class="space-y-4 py-4 text-center">
+        <div class="w-12 h-12 bg-neutral-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-gold-400">
+          <i class="fa-solid fa-shield-halved text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Acesso do Proprietário</h3>
+        <p class="text-xs text-neutral-400">Área exclusiva para gestão da vitrine e estoque.</p>
+        
+        <div class="relative max-w-xs mx-auto">
+          <input type="password" id="input-senha" placeholder="Digite sua senha de acesso" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl py-3 pl-4 pr-11 text-white text-center text-sm focus:outline-none focus:border-gold-400">
+          <button type="button" onclick="alternarVisibilidadeSenha()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300 text-sm">
+            <i id="icone-olho" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+
+        <button onclick="verificarSenha()" class="w-full max-w-xs bg-gold-500 hover:bg-gold-400 text-black font-bold py-3 rounded-xl transition text-sm">
+          Entrar no Painel
+        </button>
+      </div>
+
+      <div id="admin-painel" class="hidden space-y-6">
+        <div class="border-b border-neutral-800 pb-3 flex justify-between items-center">
+          <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+            <i class="fa-solid fa-crown text-gold-400"></i> Painel de Controle
+          </h3>
+          <button onclick="logoutAdmin()" class="text-xs text-red-400 hover:underline">Sair</button>
+        </div>
+
+        <div class="space-y-3 bg-neutral-950 p-4 rounded-2xl border border-neutral-800">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gold-400">Configurações Gerais</h4>
+          
+          <div>
+            <label class="text-[11px] text-neutral-400 block mb-1">WhatsApp de Vendas (DDD + Número):</label>
+            <div class="flex gap-2">
+              <input type="tel" id="input-wpp" placeholder="Ex: 5511999999999" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white">
+              <button onclick="salvarWpp()" class="bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-xl text-xs font-bold">Salvar</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-neutral-400 block mb-1">Trocar Banner Principal:</label>
+            <input type="file" id="input-file-banner" accept="image/*" class="w-full text-xs text-neutral-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-neutral-800 file:text-neutral-200 cursor-pointer">
+          </div>
+        </div>
+
+        <form id="form-produto" onsubmit="adicionarProduto(event)" class="space-y-3 bg-neutral-950 p-4 rounded-2xl border border-neutral-800">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-plus-circle"></i> Publicar Nova Roupa
+          </h4>
+
+          <div>
+            <label class="text-[11px] text-neutral-400 block mb-1">Marca:</label>
+            <select id="prod-marca" required class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white">
+              <option value="Tommy Hilfiger">Tommy Hilfiger</option>
+              <option value="Adidas">Adidas</option>
+              <option value="Armani">Armani</option>
+              <option value="Lacoste">Lacoste</option>
+              <option value="Brooksfield">Brooksfield</option>
+              <option value="Outras">Outras Grifes</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-neutral-400 block mb-1">Modelo / Descrição:</label>
+            <input type="text" id="prod-nome" required placeholder="Ex: Camiseta Pima Gola Redonda" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[11px] text-neutral-400 block mb-1">Preço (R$):</label>
+              <input type="number" step="0.01" id="prod-preco" required placeholder="Ex: 159.90" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="text-[11px] text-neutral-400 block mb-1">Tamanhos:</label>
+              <input type="text" id="prod-tamanho" required placeholder="Ex: P, M, G, GG" class="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[11px] text-neutral-400 block mb-1">Foto da Peça (Câmera ou Galeria):</label>
+            <input type="file" id="prod-imagem" accept="image/*" onchange="mostrarPreviewFoto(event)" required class="w-full text-xs text-neutral-400 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-gold-500 file:text-black file:font-bold cursor-pointer">
+            
+            <div id="box-preview" class="hidden mt-3 flex items-center gap-3 bg-neutral-900 p-2 rounded-xl border border-neutral-800">
+              <img id="img-preview" src="" class="w-16 h-16 object-cover rounded-lg">
+              <span class="text-xs text-neutral-400">Prévia da imagem carregada</span>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-salvar-prod" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider transition">
+            Publicar Imediatamente
+          </button>
+        </form>
+
+        <div>
+          <h4 class="text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">Peças no Catálogo (<span id="count-gerenciar">0</span>)</h4>
+          <div id="lista-gerenciar" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const HASH_AUTH = "NDQ1Ng==";
+
+    let marcaSelecionada = "todas";
+    let listaProdutosGlobal = [];
+    let dadosLojaGlobal = {
+      whatsapp: "5511999999999",
+      banner: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80"
+    };
+
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY_AQUI",
+      authDomain: "ryan-importados.firebaseapp.com",
+      databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+      projectId: "ryan-importados",
+      storageBucket: "ryan-importados.appspot.com",
+      messagingSenderId: "000000000",
+      appId: "SEU_APP_ID"
+    };
+
+    let db = null;
+    if (!firebaseConfig.apiKey.includes("SUA_API_KEY")) {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+      } catch (err) { console.error(err); }
+    }
+
+    function mostrarToast(mensagem, sucesso = true) {
+      const toast = document.getElementById("toast");
+      const msg = document.getElementById("toast-msg");
+      const icon = document.getElementById("toast-icon");
+      
+      msg.innerText = mensagem;
+      icon.className = sucesso ? "fa-solid fa-circle-check text-emerald-400 text-base" : "fa-solid fa-circle-exclamation text-red-400 text-base";
+      
+      toast.classList.remove("-translate-y-20", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("-translate-y-20", "opacity-0");
+      }, 3500);
+    }
+
+    function alternarVisibilidadeSenha() {
+      const input = document.getElementById("input-senha");
+      const icon = document.getElementById("icone-olho");
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    }
+
+    function mostrarPreviewFoto(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          document.getElementById("img-preview").src = event.target.result;
+          document.getElementById("box-preview").classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function comprimirImagem(file, maxWidth = 700, quality = 0.65) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function iniciarSincronizacao() {
+      const local = localStorage.getItem("ryan_db_local");
+      if (local) {
+        try {
+          const d = JSON.parse(local);
+          listaProdutosGlobal = d.produtos || [];
+          dadosLojaGlobal.whatsapp = d.whatsapp || dadosLojaGlobal.whatsapp;
+          dadosLojaGlobal.banner = d.banner || dadosLojaGlobal.banner;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      if (db) {
+        db.ref("loja_config").on("value", (snap) => {
+          const val = snap.val();
+          if (val) {
+            dadosLojaGlobal.whatsapp = val.whatsapp || dadosLojaGlobal.whatsapp;
+            dadosLojaGlobal.banner = val.banner || dadosLojaGlobal.banner;
+          }
+          atualizarHeaderBanner();
+        });
+
+        db.ref("produtos").on("value", (snap) => {
+          const val = snap.val();
+          listaProdutosGlobal = [];
+          if (val) {
+            Object.keys(val).forEach((key) => {
+              listaProdutosGlobal.unshift({ id: key, ...val[key] });
+            });
+          }
+          renderizarCatalogo();
+        });
+      } else {
+        atualizarHeaderBanner();
+        renderizarCatalogo();
+      }
+    }
+
+    function atualizarHeaderBanner() {
+      document.getElementById("banner-img").src = dadosLojaGlobal.banner;
+      const linkWpp = `https://wa.me/${dadosLojaGlobal.whatsapp}?text=${encodeURIComponent("Olá Ryan! Vim pelo site da loja e gostaria de tirar dúvidas.")}`;
+      document.getElementById("btn-header-wpp").href = linkWpp;
+      document.getElementById("btn-flutuante-wpp").href = linkWpp;
+      document.getElementById("input-wpp").value = dadosLojaGlobal.whatsapp;
+    }
+
+    function filtrarMarca(marca) {
+      marcaSelecionada = marca;
+      document.querySelectorAll(".filtro-btn").forEach(btn => {
+        if (btn.dataset.marca === marca) {
+          btn.className = "filtro-btn active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-gold-500 text-black shadow-md transition";
+        } else {
+          btn.className = "filtro-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800 transition";
+        }
+      });
+      renderizarCatalogo();
+    }
+
+    function renderizarCatalogo() {
+      const termoBusca = (document.getElementById("input-busca").value || "").toLowerCase().trim();
+
+      let prods = marcaSelecionada === "todas"
+        ? listaProdutosGlobal
+        : listaProdutosGlobal.filter(p => p.marca && p.marca.toLowerCase() === marcaSelecionada.toLowerCase());
+
+      if (termoBusca) {
+        prods = prods.filter(p => 
+          (p.nome && p.nome.toLowerCase().includes(termoBusca)) ||
+          (p.marca && p.marca.toLowerCase().includes(termoBusca)) ||
+          (p.tamanho && p.tamanho.toLowerCase().includes(termoBusca))
+        );
+      }
+
+      const grid = document.getElementById("grid-produtos");
+      const vazio = document.getElementById("vazio-msg");
+      const countEl = document.getElementById("produtos-count");
+      const countGerenciar = document.getElementById("count-gerenciar");
+      const listaGerenciar = document.getElementById("lista-gerenciar");
+
+      grid.innerHTML = "";
+      listaGerenciar.innerHTML = "";
+      countEl.innerText = prods.length;
+      countGerenciar.innerText = listaProdutosGlobal.length;
+
+      if (prods.length === 0) {
+        vazio.classList.remove("hidden");
+      } else {
+        vazio.classList.add("hidden");
+        prods.forEach((prod) => {
+          const precoFormatado = Number(prod.preco).toFixed(2);
+          const parcela = (Number(prod.preco) / 3).toFixed(2);
+          const msg = encodeURIComponent(`Olá Ryan! Tenho interesse na peça:\n*Marca:* ${prod.marca}\n*Modelo:* ${prod.nome}\n*Tamanho:* ${prod.tamanho}\n*Valor:* R$ ${precoFormatado}\n\nEstá disponível?`);
+          const link = `https://wa.me/${dadosLojaGlobal.whatsapp}?text=${msg}`;
+
+          const card = document.createElement("div");
+          card.className = "group bg-neutral-900/90 border border-neutral-800/80 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-neutral-700 transition duration-300 shadow-lg";
+          card.innerHTML = `
+            <div>
+              <div class="relative h-48 sm:h-64 w-full bg-neutral-950 overflow-hidden">
+                <img src="${prod.imagem}" alt="${prod.nome}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md border border-neutral-700/60 px-2.5 py-1 rounded-lg text-[10px] font-bold text-gold-400 uppercase tracking-wider">
+                  ${prod.marca}
+                </div>
+                <div class="absolute bottom-2.5 right-2.5 bg-neutral-900/90 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-neutral-300">
+                  Tam: ${prod.tamanho}
+                </div>
+              </div>
+              <div class="p-3.5 sm:p-4">
+                <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1">${prod.nome}</h3>
+                <div class="mt-2 flex items-baseline gap-1.5">
+                  <span class="text-base sm:text-lg font-extrabold text-white">R$ ${precoFormatado}</span>
+                </div>
+                <p class="text-[10px] text-neutral-400 mt-0.5">ou 3x de R$ ${parcela} sem juros</p>
+              </div>
+            </div>
+            <div class="p-3.5 sm:p-4 pt-0">
+              <a href="${link}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow-md shadow-emerald-950">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Pedir no WhatsApp
+              </a>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      listaProdutosGlobal.forEach((prod) => {
+        const item = document.createElement("div");
+        item.className = "flex items-center justify-between bg-neutral-900 p-2.5 rounded-xl border border-neutral-800 text-xs";
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <img src="${prod.imagem}" class="w-10 h-10 rounded-lg object-cover">
+            <div class="truncate">
+              <span class="text-[10px] text-gold-400 font-bold block uppercase">${prod.marca}</span>
+              <p class="text-white font-medium truncate">${prod.nome} - R$ ${Number(prod.preco).toFixed(2)}</p>
+            </div>
+          </div>
+          <button onclick="removerProduto('${prod.id}')" class="text-red-400 hover:text-red-300 p-2" title="Excluir">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        `;
+        listaGerenciar.appendChild(item);
+      });
+    }
+
+    function abrirAdmin() { 
+      document.getElementById("modal-admin").classList.remove("hidden"); 
+      document.getElementById("input-senha").focus();
+    }
+    function fecharAdmin() { document.getElementById("modal-admin").classList.add("hidden"); }
+
+    function verificarSenha() {
+      const senhaDigitada = document.getElementById("input-senha").value;
+      if (btoa(senhaDigitada) === HASH_AUTH) {
+        document.getElementById("admin-login").classList.add("hidden");
+        document.getElementById("admin-painel").classList.remove("hidden");
+        document.getElementById("input-senha").value = "";
+        mostrarToast("Acesso concedido com sucesso!");
+      } else {
+        mostrarToast("Senha incorreta. Tente novamente.", false);
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById("admin-painel").classList.add("hidden");
+      document.getElementById("admin-login").classList.remove("hidden");
+      document.getElementById("input-senha").value = "";
+    }
+
+    async function salvarWpp() {
+      const num = document.getElementById("input-wpp").value.replace(/\D/g, "");
+      if (num.length < 10) return mostrarToast("Digite um número com DDD válido!", false);
+      
+      if (db) {
+        await db.ref("loja_config/whatsapp").set(num);
+      } else {
+        dadosLojaGlobal.whatsapp = num;
+        salvarLocalmente();
+      }
+      mostrarToast("WhatsApp atualizado com sucesso!");
+    }
+
+    document.getElementById("input-file-banner").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const base64 = await comprimirImagem(file, 1300, 0.7);
+      
+      if (db) {
+        await db.ref("loja_config/banner").set(base64);
+      } else {
+        dadosLojaGlobal.banner = base64;
+        salvarLocalmente();
+      }
+      mostrarToast("Banner da loja atualizado!");
+    });
+
+    async function adicionarProduto(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-salvar-prod");
+      btn.disabled = true;
+      btn.innerText = "Publicando...";
+
+      const marca = document.getElementById("prod-marca").value;
+      const nome = document.getElementById("prod-nome").value;
+      const preco = document.getElementById("prod-preco").value;
+      const tamanho = document.getElementById("prod-tamanho").value;
+      const file = document.getElementById("prod-imagem").files[0];
+
+      if (!file) {
+        mostrarToast("Escolha ou tire a foto da peça!", false);
+        btn.disabled = false;
+        btn.innerText = "Publicar Imediatamente";
+        return;
+      }
+
+      const imagemBase64 = await comprimirImagem(file, 650, 0.7);
+
+      const novaPeca = {
+        marca,
+        nome,
+        preco,
+        tamanho,
+        imagem: imagemBase64,
+        criadoEm: Date.now()
+      };
+
+      if (db) {
+        await db.ref("produtos").push(novaPeca);
+      } else {
+        novaPeca.id = "id_" + Date.now();
+        listaProdutosGlobal.unshift(novaPeca);
+        salvarLocalmente();
+      }
+
+      document.getElementById("form-produto").reset();
+      document.getElementById("box-preview").classList.add("hidden");
+      btn.disabled = false;
+      btn.innerText = "Publicar Imediatamente";
+      mostrarToast("Peça publicada para todos os clientes!");
+    }
+
+    async function removerProduto(id) {
+      if (!confirm("Deseja apagar esta peça do catálogo?")) return;
+      if (db) {
+        await db.ref("produtos/" + id).remove();
+      } else {
+        listaProdutosGlobal = listaProdutosGlobal.filter(p => p.id !== id);
+        salvarLocalmente();
+      }
+      mostrarToast("Peça removida com sucesso!");
+    }
+
+    function salvarLocalmente() {
+      localStorage.setItem("ryan_db_local", JSON.stringify({
+        whatsapp: dadosLojaGlobal.whatsapp,
+        banner: dadosLojaGlobal.banner,
+        produtos: listaProdutosGlobal
+      }));
+      atualizarHeaderBanner();
+      renderizarCatalogo();
+    }
+
+    window.addEventListener("DOMContentLoaded", iniciarSincronizacao);
+  </script>
+</body>
+</html>
